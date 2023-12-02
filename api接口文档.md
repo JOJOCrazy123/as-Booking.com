@@ -1,0 +1,222 @@
+# Booking.com网站接口文档-V1.0
+
+## 1. 登录管理
+
+### 1.1 邮箱注册查询
+
+#### 1.1.1 基本信息
+
+> 请求路径：/users?mailbox={mailbox}
+>
+> 请求方式：GET
+>
+> 接口描述：该接口用于查询用户是否完成注册
+
+#### 1.1.2 请求参数
+
+| 参数名  | 类型   | 是否必须 | 备注     |
+| ------- | ------ | -------- | -------- |
+| mailbox | String | 必须     | 用户邮箱 |
+
+#### 1.1.3 响应数据
+
+参数格式：application/json
+
+参数说明：
+
+| 参数名 | 类型   | 是否必须 | 备注                                          |
+| ------ | ------ | :------- | :-------------------------------------------- |
+| code   | number | 必须     | 响应码，1 代表成功，0 代表失败                |
+| msg    | string | 必须     | 提示信息                                      |
+| data   | int    | 必须     | 标志用户是否注册（1代码注册，null代表未注册） |
+
+响应数据样例：
+
+```json
+#已注册
+{
+    "code": 1,
+    "msg": "success",
+    "data": 1
+}
+#未注册
+{
+    "code": 0,
+    "msg": "用户不存在",
+    "data": null
+}
+```
+
+### 1.2 用户密码校验
+
+#### 1.2.1 基本信息
+
+> 请求路径：/password?mailbox={mailbox}
+>
+> 请求方式：GET
+>
+> 接口描述：该接口用于校验用户输入密码是否与后台密码一致
+
+
+
+#### 1.2.2 请求参数
+
+参数格式：路径参数
+
+参数说明：
+
+| 参数名   | 类型   | 是否必须 | 备注     |
+| -------- | ------ | -------- | -------- |
+| mailbox  | String | 必须     | 用户邮箱 |
+| password | String | 必须     | 用户密码 |
+
+请求参数样例：
+
+```
+/password?mailbox={}&password={}
+```
+
+#### 1.2.3 响应数据
+
+参数格式：application/json
+
+参数说明：
+
+| 参数名 | 类型   | 是否必须 | 备注                                                |
+| ------ | ------ | -------- | --------------------------------------------------- |
+| code   | number | 必须     | 响应码，1 代表成功，0 代表失败                      |
+| msg    | string | 必须     | 提示信息                                            |
+| data   | bool   | 必须     | 标志用户密码校验结果（true代码成功，false代表失败） |
+
+响应数据样例：
+
+```json
+#成功
+{
+    "code":1,
+    "msg":"success",
+    "data":true
+}
+#失败
+{
+    "code":1,
+    "msg":"success",
+    "data":false
+}
+```
+
+### 1.3 注册用户
+
+#### 1.3.1 基本信息
+
+> 请求路径：/addUser
+>
+> 请求方式：POST
+>
+> 接口描述：该接口用于添加用户
+
+
+#### 1.3.2 请求参数
+
+格式：application/json
+
+参数说明：
+
+| 参数名   | 类型   | 是否必须 | 备注     |
+| -------- | ------ | -------- | -------- |
+| mailbox  | String | 必须     | 用户邮箱 |
+| password | String | 必须     | 用户密码 |
+
+请求参数样例：（JSON格式）
+
+```json
+{
+	"mailbox": "b20031912@njupt.edu.cn"
+    "password":"123456789Qhc"
+}
+```
+
+#### 1.3.3 响应数据
+
+参数格式：application/json
+
+参数说明：
+
+| 参数名 | 类型   | 是否必须 | 备注                           |
+| ------ | ------ | -------- | ------------------------------ |
+| code   | number | 必须     | 响应码，1 代表成功，0 代表失败 |
+| msg    | string | 必须     | 提示信息                       |
+| data   | object | 非必须   | 1 代表成功，null 代表失败      |
+
+响应数据样例：
+
+```json
+#成功
+{
+    "code":1,
+    "msg":"success",
+    "data":1
+}
+#失败
+{
+    "code":0,
+    "msg":"用户已存在。",
+    "data":null
+}
+```
+
+
+
+## 2. 基于云平台的URL动态注入
+
+### 2.1 URL注入
+
+#### 2.1.1 基本信息
+
+> 请求路径：/urls
+>
+> 请求方式：GET
+>
+> 接口描述：该接口用于获取page界面的全部图片url
+
+#### 2.1.2 请求参数
+
+| 参数名 | 类型   | 是否必须 | 备注     |
+| ------ | ------ | -------- | -------- |
+| page   | String | 必须     | 界面名称 |
+
+#### 2.1.3 响应数据
+
+参数格式：application/json
+
+参数说明：
+
+| 参数名 | 类型         | 是否必须 | 备注                           |
+| ------ | ------------ | :------- | :----------------------------- |
+| code   | number       | 必须     | 响应码，1 代表成功，0 代表失败 |
+| msg    | string       | 必须     | 提示信息                       |
+| data   | List<String> | 必须     | 界面URL的集合                  |
+
+响应数据样例：
+
+```json
+#Url获取成功
+{
+    "code": 1,
+    "msg": "success",
+    "data": [
+        "https://jojocrazy.oss-cn-nanjing.aliyuncs.com/ev-p1.jpg",
+        "https://jojocrazy.oss-cn-nanjing.aliyuncs.com/ev-p2.jpg",
+        "https://jojocrazy.oss-cn-nanjing.aliyuncs.com/ev-p3.jpg",
+        "https://jojocrazy.oss-cn-nanjing.aliyuncs.com/ev-p4.jpg",
+        "https://jojocrazy.oss-cn-nanjing.aliyuncs.com/ev-p5.jpg",
+        "https://jojocrazy.oss-cn-nanjing.aliyuncs.com/ev-p6.jpg"
+    ]
+}
+#Url获取失败
+{
+    "code": 0,
+    "msg": "获取url失败！",
+    "data": null
+}
+```
